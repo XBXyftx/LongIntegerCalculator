@@ -1,3 +1,5 @@
+package utils.IntegerListPack;
+
 /**
  * 节点类
  * @author XBX

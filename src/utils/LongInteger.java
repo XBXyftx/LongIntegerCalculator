@@ -1,3 +1,7 @@
+package utils;
+
+import utils.IntegerListPack.IntegerList;
+
 /**
  * 长整数类
  * @author XBX
