@@ -6,7 +6,7 @@ package utils.IntegerListPack;
  * @param <T> 泛型参数，用于存储任意类型的整数
  */
 public class IntegerList<T> {
-    private IntegerNode<T> head;
+    public IntegerNode<T> head;
     private int size;
 
     /**
@@ -154,12 +154,14 @@ public class IntegerList<T> {
     /**
      * 打印链表
      */
-    public void printList() {
+    public String getListTotalValue() {
         IntegerNode<T> current = head;
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < size; i++) {
-            System.out.print(current.data);
+            sb.append(current.data);
             current = current.next;
         }
+        return sb.toString();
     }
 
     /**
