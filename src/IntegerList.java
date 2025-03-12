@@ -3,7 +3,7 @@
  * @author XBX
  * @param <T> 泛型参数，用于存储任意类型的整数
  */
-public class IntegerCharList<T> {
+public class IntegerList<T> {
     private IntegerNode<T> head;
     private int size;
 
@@ -11,7 +11,7 @@ public class IntegerCharList<T> {
      * 空参构造函数
      * 初始化链表的头节点为null，链表大小为0
      */
-    public IntegerCharList() {
+    public IntegerList() {
         head = null;
         size = 0;
     }
@@ -20,7 +20,7 @@ public class IntegerCharList<T> {
      * 有参构造函数
      * @param data 链表的头节点数据
      */
-    public IntegerCharList(T data) {
+    public IntegerList(T data) {
         head = new IntegerNode<>(data);
         head.next = head;
         head.prev = head;

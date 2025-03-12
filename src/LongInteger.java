@@ -5,13 +5,11 @@
  */
 public class LongInteger {
     /**
-     * IntegerHeadNode: 长整数的头节点
-     * IntegerTailNode: 长整数的尾节点
-     * IntegerSize: 长整数的长度
+     * list: 长整数的链表
+     * integerSize: 长整数的长度
      */
-    IntegerNode<String> IntegerHeadNode;
-    IntegerNode<String> IntegerTailNode;
-    int IntegerSize;
+    IntegerList<Integer> list;
+    int integerSize;
 
     /**
      * 空参构造函数
@@ -19,9 +17,8 @@ public class LongInteger {
      * 长度为0
      */
     public LongInteger(){
-        IntegerHeadNode = null;
-        IntegerTailNode = null;
-        IntegerSize = 0;
+        list = new IntegerList<>();
+        integerSize = 0;
     }
 
     /**
