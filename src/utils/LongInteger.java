@@ -1,6 +1,10 @@
 package utils;
+import java.util.Scanner;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import utils.IntegerListPack.IntegerList;
 import utils.IntegerListPack.IntegerNode;
 
@@ -30,6 +34,7 @@ public class LongInteger {
     public LongInteger(){
         list = new IntegerList<>();
         integerSize = 0;
+        logger.log(Level.INFO, LONG_INTEGER_LOG_TAG+"创建长整数链表完成，当前链表长度为:"+list.size()+"，长整数长度为:"+integerSize+"，长整数为:0");
     }
 
     /**
@@ -51,8 +56,8 @@ public class LongInteger {
             list.add(Integer.parseInt(IntegerStr.substring(i, i + 1)));
         }
         // 输出时考虑正负
-        String sign = isNegative ? "-" : "";
-        logger.log(Level.INFO, LONG_INTEGER_LOG_TAG+"创建长整数链表完成，当前链表长度为:"+list.size()+"，长整数长度为:"+integerSize+"，长整数为:+"+sign+list.getListTotalValue());
+        String sign = isNegative ? "-" : "+";
+        logger.log(Level.INFO, LONG_INTEGER_LOG_TAG+"创建长整数链表完成，当前链表长度为:"+list.size()+"，长整数长度为:"+integerSize+"，长整数为:"+sign+list.getListTotalValue());
     }
 
     /**
@@ -64,9 +69,10 @@ public class LongInteger {
     public static int compareAbs(LongInteger num1, LongInteger num2){
         // 比较两个长整数的长度
         if(num1.integerSize > num2.integerSize){
-            logger.log(Level.INFO, LONG_INTEGER_LOG_TAG+"比较两个长整数的绝对值大小，num1的绝对值大于num2的绝对值");
+            logger.log(Level.INFO, LONG_INTEGER_LOG_TAG+"compareAbs:  num1的绝对值大于num2的绝对值");
             return 1;
         }else if(num1.integerSize < num2.integerSize){
+            logger.log(Level.INFO, LONG_INTEGER_LOG_TAG+"compareAbs:  num1的绝对值小于num2的绝对值");
             return -1;
         }
 
@@ -76,8 +82,10 @@ public class LongInteger {
         // 比较两个长整数的每一位数字
         for(int i = 0; i<num1.integerSize; i++){
             if(node1.getData() > node2.getData()){
+                logger.log(Level.INFO, LONG_INTEGER_LOG_TAG+"compareAbs:  num1的绝对值大于num2的绝对值");
                 return 1;
             }else if(node1.getData() < node2.getData()){
+                logger.log(Level.INFO, LONG_INTEGER_LOG_TAG+"compareAbs:  num1的绝对值小于num2的绝对值");
                 return -1;
             }
             node1 = node1.getNext();
@@ -87,14 +95,70 @@ public class LongInteger {
     }
 
     /**
+     * 该方法用于让用户输入一个四则运算式子，并根据输入的式子确定运算符和操作数，
+     * 然后将操作数封装为 LongInteger 对象，最后调用 dispatchCalculationBySign 方法进行计算。
+     */
+    public static void startServer() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("请输入算式（格式示例：(-100)*(+200)）：");
+        String userInput = scanner.nextLine().trim();
+
+        // 使用增强型正则表达式匹配带符号括号格式
+        Pattern pattern = Pattern.compile(
+                "^\\s*" +                // 允许前置空格
+                        "\\(\\s*" +             // 左括号
+                        "([+-]?\\d+)" +         // 操作数1（允许符号）
+                        "\\s*\\)\\s*" +         // 右括号及周围空格
+                        "([+*/-])" +            // 运算符
+                        "\\s*" +                // 运算符周围空格
+                        "\\(\\s*" +             // 左括号
+                        "([+-]?\\d+)" +         // 操作数2（允许符号）
+                        "\\s*\\)\\s*" +         // 右括号及周围空格
+                        "$"                     // 行尾
+        );
+        Matcher matcher = pattern.matcher(userInput);
+
+        if (matcher.find()) {
+            String numStr1 = matcher.group(1);  // 提取第一个操作数
+            String operator = matcher.group(2); // 提取运算符
+            String numStr2 = matcher.group(3);  // 提取第二个操作数
+            logger.log(Level.INFO, LONG_INTEGER_LOG_TAG + "numStr1:" + numStr1 + ",operator:" + operator + ",numStr2:" + numStr2);
+
+            try {
+                LongInteger num1 = new LongInteger(numStr1);
+                LongInteger num2 = new LongInteger(numStr2);
+                dispatchCalculationBySign(num1, num2, operator);
+            } catch (NumberFormatException e) {
+                System.err.println(LONG_INTEGER_LOG_TAG + "非法长整数格式：" + e.getMessage());
+            }
+        } else {
+            System.err.println("输入格式错误！请使用括号包裹操作数，示例：(-123)*(+456)");
+        }
+    }
+
+
+
+    /**
+     * 根据运算符号进行相应的运算
+     * @param num1 待运算的长整数
+     * @param num2 待运算的长整数
+     * @param sign 运算符号
+     */
+    public static void dispatchCalculationBySign(LongInteger num1, LongInteger num2,String sign){
+
+    }
+
+    /**
      * 加法运算
      * @param num1 待相加的长整数
      * @param num2 待相加的长整数
      * @return 相加后的长整数
      */
     public static LongInteger add(LongInteger num1, LongInteger num2){
+        logger.log(Level.WARNING, LONG_INTEGER_LOG_TAG+"add:  开始相加处理");
         return null;
     }
+
 
     /**
      * 减法运算
