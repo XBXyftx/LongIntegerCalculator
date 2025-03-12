@@ -1,20 +1,22 @@
 package utils.IntegerListPack;
 
 /**
- * 存储长整数的双向循环链表类
+ * 存储长整数的双向非循环链表类
  * @author XBX
  * @param <T> 泛型参数，用于存储任意类型的整数
  */
 public class IntegerList<T> {
     public IntegerNode<T> head;
+    public IntegerNode<T> tail; // 新增尾节点指针
     private int size;
 
     /**
      * 空参构造函数
-     * 初始化链表的头节点为null，链表大小为0
+     * 初始化链表的头节点和尾节点为 null，链表大小为 0
      */
     public IntegerList() {
         head = null;
+        tail = null;
         size = 0;
     }
 
@@ -24,8 +26,7 @@ public class IntegerList<T> {
      */
     public IntegerList(T data) {
         head = new IntegerNode<>(data);
-        head.next = head;
-        head.prev = head;
+        tail = head;
         size = 1;
     }
 
@@ -39,28 +40,25 @@ public class IntegerList<T> {
 
     /**
      * 判断链表是否为空
-     * @return 如果链表为空，返回true；否则返回false
+     * @return 如果链表为空，返回 true；否则返回 false
      */
     public boolean isEmpty() {
         return size == 0;
     }
 
     /**
-     * 清空链表
+     * 添加元素到链表尾部
      * @param data 节点数据
      */
     public void add(T data) {
         IntegerNode<T> newNode = new IntegerNode<>(data);
         if (isEmpty()) {
             head = newNode;
-            newNode.next = newNode;
-            newNode.prev = newNode;
+            tail = newNode;
         } else {
-            IntegerNode<T> tail = head.prev;
             tail.next = newNode;
             newNode.prev = tail;
-            newNode.next = head;
-            head.prev = newNode;
+            tail = newNode;
         }
         size++;
     }
@@ -79,13 +77,16 @@ public class IntegerList<T> {
             return;
         }
         IntegerNode<T> newNode = new IntegerNode<>(data);
-        if (isEmpty()) { // 如果链表为空，直接将新节点作为头节点
+        if (isEmpty()) { // 如果链表为空，直接将新节点作为头节点和尾节点
             head = newNode;
-            newNode.next = newNode;
-            newNode.prev = newNode;
+            tail = newNode;
+        } else if (index == 0) { // 在头部插入元素
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
         } else { // 在指定位置插入元素
             IntegerNode<T> current = head;
-            for (int i = 0; i < index; i++) {// 找到要插入位置的节点
+            for (int i = 0; i < index; i++) { // 找到要插入位置的节点
                 current = current.next;
             }
             IntegerNode<T> prevNode = current.prev;
@@ -93,9 +94,6 @@ public class IntegerList<T> {
             newNode.prev = prevNode;
             newNode.next = current;
             current.prev = newNode;
-            if (index == 0) {
-                head = newNode;
-            }
         }
         size++;
     }
@@ -119,14 +117,18 @@ public class IntegerList<T> {
         T removedData = current.data;
         if (size == 1) {
             head = null;
+            tail = null;
+        } else if (index == 0) { // 移除头节点
+            head = current.next;
+            head.prev = null;
+        } else if (index == size - 1) { // 移除尾节点
+            tail = current.prev;
+            tail.next = null;
         } else {
             IntegerNode<T> prevNode = current.prev;
             IntegerNode<T> nextNode = current.next;
             prevNode.next = nextNode;
             nextNode.prev = prevNode;
-            if (index == 0) {
-                head = nextNode;
-            }
         }
         size--;
         return removedData;
@@ -157,7 +159,7 @@ public class IntegerList<T> {
     public String getListTotalValue() {
         IntegerNode<T> current = head;
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < size; i++) {
+        while (current != null) {
             sb.append(current.data);
             current = current.next;
         }
@@ -182,4 +184,13 @@ public class IntegerList<T> {
         }
         current.data = data;
     }
+
+    /**
+     * 在链表头部添加元素
+     * @param data 元素值
+     */
+    public void addFirst(T data) {
+        insert(0, data);
+    }
 }
+
