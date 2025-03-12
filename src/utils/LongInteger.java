@@ -149,7 +149,7 @@ public class LongInteger {
                 System.err.println("非法格式: " + e.getMessage());
             }
         } else {
-            System.err.println("格式错误！示例：(-20) - (+10) 或 20-10");
+            System.err.println("格式错误！示例：-20 - +10");
         }
     }
 
