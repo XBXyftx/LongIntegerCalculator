@@ -190,17 +190,17 @@ public class LongInteger {
                 int cmp = compareAbs(num1, num2);
                 if (cmp == 1) {
                     boolean resultIsNegative = num1.isNegative;
-                    logger.log(Level.INFO, LONG_INTEGER_LOG_TAG + "加法运算，结果为" + (resultIsNegative ? "负" : "正"));
+                    logger.log(Level.INFO, LONG_INTEGER_LOG_TAG + "减法运算，结果为" + (resultIsNegative ? "负" : "正"));
                     LongInteger result = subtract(num1, num2, resultIsNegative);
                     System.out.println("结果为：" +(result.isNegative?"-":"+")+ result.list.getListTotalValue());
                 } else if (cmp == -1) {
                     boolean resultIsNegative = num2.isNegative;
-                    logger.log(Level.INFO, LONG_INTEGER_LOG_TAG + "加法运算，结果为" + (resultIsNegative ? "负" : "正"));
+                    logger.log(Level.INFO, LONG_INTEGER_LOG_TAG + "减法运算，结果为" + (resultIsNegative ? "负" : "正"));
                     LongInteger result = subtract(num2, num1, resultIsNegative);
                     System.out.println("结果为：" +(result.isNegative?"-":"+")+ result.list.getListTotalValue());
                 } else {
                     // 绝对值相等，结果为0
-                    logger.log(Level.INFO, LONG_INTEGER_LOG_TAG + "加法运算，结果为0");
+                    logger.log(Level.INFO, LONG_INTEGER_LOG_TAG + "结果为0");
                     LongInteger result = new LongInteger("0");
                     System.out.println("结果为：" +(result.isNegative?"-":"+")+ result.list.getListTotalValue());
                 }
@@ -257,6 +257,7 @@ public class LongInteger {
      * @return 相减后的长整数
      */
     public static LongInteger subtract(LongInteger num1, LongInteger num2, boolean ResultIsNegative) {
+        logger.log(Level.INFO, LONG_INTEGER_LOG_TAG + "进入减法运算" + (num1.isNegative? "-" : "+") +num1.list.getListTotalValue() + (num2.isNegative? "-" : "+")+num2.list.getListTotalValue());
         IntegerList<Integer> resultList = new IntegerList<>();
         IntegerNode<Integer> node1 = num1.list.tail; // 被减数（绝对值较大）
         IntegerNode<Integer> node2 = num2.list.tail;
@@ -291,55 +292,5 @@ public class LongInteger {
         result.isNegative = ResultIsNegative;
         return result;
     }
-    /**
-     * 乘法运算
-     * @param num1 待相乘的长整数
-     * @param num2 待相乘的长整数
-     * @param ResultIsNegative 结果是否为负数
-     * @return 相乘后的长整数
-     */
-//    public static LongInteger multiply(LongInteger num1, LongInteger num2,boolean ResultIsNegative) {
-//
-//    }
 
-    /**
-     * 除法运算
-     * @param num1 待相除的长整数，被除数
-     * @param num2 待相除的长整数，除数
-     * @param ResultIsNegative 结果是否为负数
-     * @return 相除后的长整数
-     */
-//    public static LongInteger divide(LongInteger num1, LongInteger num2,boolean ResultIsNegative) {
-//
-//    }
-
-    /**
-     * 翻转链表
-     * @param src 待翻转的链表
-     * @return 翻转后的链表
-     */
-    private static IntegerList<Integer> reverseList(IntegerList<Integer> src) {
-        IntegerList<Integer> reversed = new IntegerList<>();
-        IntegerNode<Integer> curr = src.head;
-        while (curr != null) {
-            reversed.addFirst(curr.getData());
-            curr = curr.getNext();
-        }
-        return reversed;
-    }
-
-    /**
-     * 链表转字符串（逆序后为高位在前）
-     * @param list
-     * @return
-     */
-    private static String listToString(IntegerList<Integer> list) {
-        StringBuilder sb = new StringBuilder();
-        IntegerNode<Integer> curr = list.head;
-        while (curr != null) {
-            sb.insert(0, curr.getData()); // 逆序拼接
-            curr = curr.getNext();
-        }
-        return sb.toString();
-    }
 }
