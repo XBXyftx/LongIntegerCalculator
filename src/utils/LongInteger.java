@@ -163,7 +163,7 @@ public class LongInteger {
         if (sign.equals("-")) {
             // 将减法转换为加法：num1 + (-num2)
             LongInteger newNum2 = new LongInteger(num2.list.getListTotalValue());
-//            LongInteger newNum2 = new LongInteger(num2.toString());
+            //LongInteger newNum2 = new LongInteger(num2.toString());
             newNum2.isNegative = !newNum2.isNegative;
             dispatchCalculationBySign(num1, newNum2, "+");
             return;
