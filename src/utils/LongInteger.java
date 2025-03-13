@@ -138,6 +138,7 @@ public class LongInteger {
         if (matcher.matches()) {
             String numStr1 = matcher.group(1).replaceAll("[^0-9+-]", "");
             String operator = matcher.group(2);
+            logger.log(Level.INFO, LONG_INTEGER_LOG_TAG + "operator: " + operator);
             String numStr2 = matcher.group(3).replaceAll("[^0-9+-]", "");
             try {
                 LongInteger num1 = new LongInteger(numStr1);
@@ -164,7 +165,7 @@ public class LongInteger {
             // 将减法转换为加法：num1 + (-num2)
             LongInteger newNum2 = new LongInteger(num2.list.getListTotalValue());
             //LongInteger newNum2 = new LongInteger(num2.toString());
-            newNum2.isNegative = !newNum2.isNegative;
+            newNum2.isNegative = !num2.isNegative;
             dispatchCalculationBySign(num1, newNum2, "+");
             return;
         }
